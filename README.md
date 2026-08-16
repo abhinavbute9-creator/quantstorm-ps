@@ -1,5 +1,6 @@
 # Divided Oracle — QuantStorm 2026 (QATC IITD X FEC IITG X QUANT CLUB IITB)
 
+<p>
   <strong style="font-size: 20px;">Title Sponsors</strong>
 </p>
 
