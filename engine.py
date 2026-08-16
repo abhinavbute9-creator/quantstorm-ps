@@ -87,10 +87,15 @@ class TimeTracker:
         self.call_times: list[float] = []   # milliseconds per call
         self.warnings: list[str] = []       # things the author should fix
         self.violations = 0                 # calls over the hard limit
-        # Routine, legal clamps -- a bid vector larger than the remaining
-        # budget, mostly. Counted rather than listed: every competent bot
-        # trips it many times a match, and burying the real warnings under
-        # hundreds of these is how a genuine problem goes unnoticed.
+        # Routine, legal clamps -- a quote re-centred into the width band,
+        # a counter pulled back inside the current range. Counted rather than
+        # listed: a competent bot trips these many times a match, and burying
+        # the real warnings under hundreds of them is how a genuine problem
+        # goes unnoticed.
+        #
+        # An over-budget bid vector is counted here too, but it is ALSO
+        # warned about, because it is no longer routine: under the zeroing
+        # rule it costs the bot that round's auction outright.
         self.clamps = 0
 
     def record(self, elapsed_ms: float, call_label: str = ""):
@@ -289,7 +294,7 @@ class BotWrapper:
           - Returns a dict
           - Keys are from the offered list only
           - Values are non-negative integers
-          - Total does not exceed obs.te_mine (scales down if needed)
+          - Total does not exceed obs.te_mine (every bid zeroed if it does)
           - Individual values clamped to MAX_REASONABLE_VALUE
         """
         if self.failed:
@@ -350,17 +355,24 @@ class BotWrapper:
                 f"bid() contained keys not in offered: {extra} → ignored"
             )
 
-        # Enforce total <= te_mine, scaling every bid down by the same
-        # factor. Order-independent and deterministic: truncating in offer
-        # order instead would mean a bot that bid its whole stack on three
-        # powers won whichever happened to be listed first.
+        # Enforce total <= te_mine. A vector that does not fit is ZEROED, not
+        # rescaled: the bot bid something it could not pay for, and the engine
+        # does not guess which part of it was meant.
+        #
+        # Rescaling was the old rule and it quietly did the bot's job for it.
+        # A vector scaled to fit still wins auctions, so "bid an absurd number"
+        # was a legal way to spell all-in without tracking a budget -- and
+        # because the scaled result was truncated, the engine also chose which
+        # power lost its last tick. Zeroing keeps the allocation decision where
+        # it belongs and makes an over-budget vector cost the round's auction.
         total = sum(clean.values())
         if total > obs.te_mine:
             self.timer.clamps += 1
-            if obs.te_mine <= 0:
-                return dict.fromkeys(clean, 0)
-            scale = obs.te_mine / total
-            clean = {k: int(v * scale) for k, v in clean.items()}
+            self.timer.warnings.append(
+                f"bid() totalled {total} against te_mine={obs.te_mine} "
+                f"→ every bid zeroed; no power contested this round"
+            )
+            return dict.fromkeys(clean, 0)
 
         return clean
 
