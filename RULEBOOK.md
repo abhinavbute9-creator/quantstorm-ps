@@ -194,10 +194,15 @@ Both bots submit blind, simultaneous TE bids on the offered power.
 * Non-numeric values are **discarded**.
 * Negative values are **clamped to 0**.
 * Values are clamped to `MAX_REASONABLE_VALUE = 10000`.
-* If your bids **total** more than `obs.te_mine`, every bid is **scaled down by
-  the same factor** and truncated to an integer. This is legal but is counted
-  as a clamp. Track your own budget.
+* If your bids **total** more than `obs.te_mine`, **every bid in the vector is
+  set to 0** — you contest nothing that round. It is counted as a clamp. The
+  engine does not rescale your vector to fit and does not guess which part of
+  it you meant: **track your own budget.**
 * Returning `{}` bids nothing.
+
+Overbidding is therefore not a cheap way to spell "all-in". A vector that does
+not fit does not win a smaller version of itself; it wins nothing, and if your
+opponent bid anything at all they take the power uncontested.
 
 ---
 
@@ -608,9 +613,8 @@ action in that deal also takes its fallback.
 * Non-numeric values → discarded.
 * Negative → clamped to `0`.
 * Above `10000` → clamped to `10000`.
-* Total above `obs.te_mine` → all bids scaled by `te_mine / total`, truncated to
-  int. Counted as a clamp.
-* `te_mine <= 0` → all bids become `0`.
+* Total above `obs.te_mine` → **every bid becomes `0`**. Counted as a clamp.
+* `te_mine <= 0` → any non-zero bid total becomes `0`, same rule.
 
 **`quote()`**
 * Non-indexable or fewer than 2 values → default quote.
