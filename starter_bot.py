@@ -134,8 +134,7 @@ class Bot:
 
         Returns:
             Dict mapping power names to bid amounts (non-negative ints).
-            Total bids MUST NOT exceed obs.te_mine (over-budget bid vectors
-            are scaled down proportionally, which is rarely what you meant).
+            Total bids MUST NOT exceed obs.te_mine (otherwise all your bids will be set to 0 for the current round).
             Powers you don't bid on go to the opponent if they bid ≥ 1.
             Equal non-zero bids → coin flip; the winner pays.
 
