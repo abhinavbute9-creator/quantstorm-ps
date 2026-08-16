@@ -45,7 +45,7 @@ python backtester.py --bot1 strategies/my\_bot.py --bot2 strategies/rational.py 
 
 A different score with `--isolate` means your bot is relying on something
 the tournament takes away — state carried between deals, a call over the
-time limit, or a module-level cache.
+time limit, or a module-level cache.	
 
 ## Requirements
 
@@ -62,7 +62,7 @@ Your submission may import only `math`, `random`, `statistics`, `collections`,
 |Path|Purpose|
 |-|-|
 |`RULEBOOK.md`|The complete rules, parameters and interface specification|
-|`starter\_bot.py`|Annotated template — copy this to begin|
+|`starter\_bot.py`|Annotated template - copy this to begin|
 |`backtester.py`|Duel two bots; `--validate` checks a submission would be accepted|
 |`strategies/naive\_ev.py`|Baseline: prices on its own coins, never bids|
 |`strategies/rational.py`|Baseline: reads the opponent's quote, never bids|
