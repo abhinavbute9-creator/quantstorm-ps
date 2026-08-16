@@ -234,7 +234,7 @@ class BotWrapper:
                 f"{type(bot.error).__name__}: {bot.error}"
             )
 
-    # ── call plumbing ──────────────────────────────────────
+    # -- call plumbing --------------------------------------
 
     def _call(self, method: str, label: str, *args):
         """Invoke one bot method, timing it and normalising its failures.
@@ -277,7 +277,7 @@ class BotWrapper:
         self.timer.record(elapsed, label)
         return True, value
 
-    # ── reset ──────────────────────────────────────────────
+    # -- reset ----------------------------------------------
 
     def do_reset(self, seat: int, config: GameConfig, seed: int):
         """Call bot.reset() with error handling."""
@@ -285,7 +285,7 @@ class BotWrapper:
         if not ok:
             self.failed = True
 
-    # ── bid ────────────────────────────────────────────────
+    # -- bid ------------------------------------------------
 
     def do_bid(self, obs: Obs, offered: list[str]) -> dict[str, int]:
         """Call bot.bid() with full validation.
@@ -376,7 +376,7 @@ class BotWrapper:
 
         return clean
 
-    # ── quote ──────────────────────────────────────────────
+    # -- quote ----------------------------------------------
 
     def do_quote(self, obs: Obs) -> tuple[int, int]:
         """Call bot.quote() with full validation.
@@ -472,7 +472,7 @@ class BotWrapper:
 
         return (bid, ask)
 
-    # ── respond ────────────────────────────────────────────
+    # -- respond --------------------------------------------
 
     def do_respond(
         self, obs: Obs, quote: tuple[int, int], turn: int
@@ -497,7 +497,7 @@ class BotWrapper:
 
         return self._sanitise_response(result, quote, obs, turn)
 
-    # ── use_transform ──────────────────────────────────────
+    # -- use_transform --------------------------------------
 
     def do_use_transform(self, obs: Obs) -> bool:
         """Ask the winner of the TRANSFORM auction whether to fire it.
@@ -744,7 +744,7 @@ def trade_round(
     maker = 0 if obs[0].is_maker else 1
     taker = 1 - maker
 
-    # ── Maker opens with quote ──
+    # -- Maker opens with quote --
     bid, ask = bots[maker].do_quote(obs[maker])
     opening = {"maker_seat": maker, "open_bid": bid, "open_ask": ask}
 
@@ -755,7 +755,7 @@ def trade_round(
             f"  [{bots[maker].timer.last_ms():.2f}ms]"
         )
 
-    # ── Responses (turns 2 through N_TURNS) ──
+    # -- Responses (turns 2 through N_TURNS) --
     speaker, last_quoter = taker, maker
     for turn in range(2, config.N_TURNS + 1):
         act = bots[speaker].do_respond(obs[speaker], (bid, ask), turn)
@@ -792,7 +792,7 @@ def trade_round(
         last_quoter = speaker
         speaker = 1 - speaker
 
-    # ── No acceptance: forced fill at midpoint ──
+    # -- No acceptance: forced fill at midpoint --
     rule = config.MIDPOINT_SIDE_RULE
     if rule == "last_quoter_sells":
         short = last_quoter
@@ -967,7 +967,7 @@ def apply_maker_obligation(
         if verbose:
             logs.append(
                 f"    R{c.round} Maker obligation: "
-                f"{'straddle' if straddle else 'miss'} at width {width} → "
+                f"{'straddle' if straddle else 'miss'} at width {width} - "
                 f"maker gets {amount:+.2f}"
             )
 
@@ -1135,7 +1135,7 @@ def play_deal(
         if invert_roles:
             logs.append("  [MIRROR: roles inverted]")
 
-    # ── Round loop ─────────────────────────────────────────
+    # -- Round loop -----------------------------------------
     for r in range(1, config.N_ROUNDS + 1):
         if verbose:
             logs.append(f"\n  - Round {r} {'-' * 50}")
@@ -1250,11 +1250,11 @@ def play_deal(
                 f"forced={'yes' if contract.forced else 'no'}"
             )
 
-    # ── Settlement ─────────────────────────────────────────
+    # -- Settlement -----------------------------------------
     if verbose:
-        logs.append(f"\n  {'═' * 58}")
+        logs.append(f"\n  {'-' * 58}")
         logs.append(f"  SETTLEMENT  (S = {score})")
-        logs.append(f"  {'─' * 58}")
+        logs.append(f"  {'-' * 58}")
 
     pnl = [0.0, 0.0]
 
@@ -1295,7 +1295,7 @@ def play_deal(
     if verbose:
         logs.append(
             f"    TE salvage: {bots[0].name} TE={te[0]}  "
-            f"{bots[1].name} TE={te[1]}  → "
+            f"{bots[1].name} TE={te[1]}  - "
             f"{bots[0].name} gets {te_diff:+.2f}"
         )
 
@@ -1308,7 +1308,7 @@ def play_deal(
         )
 
     if verbose:
-        logs.append(f"    {'─' * 40}")
+        logs.append(f"    {'-' * 40}")
         logs.append(
             f"    FINAL PnL: {bots[0].name}={pnl[0]:+.2f}  "
             f"{bots[1].name}={pnl[1]:+.2f}  "
@@ -1443,7 +1443,7 @@ def play_match(
         if any(v > config.MAX_TIME_VIOLATIONS for v in violations):
             break
 
-    # ── Forfeits ───────────────────────────────────────────
+    # -- Forfeits -------------------------------------------
     # A bot that repeatedly overruns the hard per-call limit forfeits the
     # match. The penalty is a TRANSFER charged to the offending seat, so the
     # match stays zero-sum and a hanging bot can never profit from hanging.
