@@ -1,6 +1,6 @@
 # Divided Oracle — QuantStorm 2026 (QATC IITD X FEC IITG X QUANT CLUB IITB)
 
-<p>
+<p align="center">
   <strong style="font-size: 20px;">Title Sponsors</strong>
 </p>
 
@@ -19,7 +19,6 @@
 </p>
 
 **Last Updated at: 12:52 AM, if your version is older please re-fetch the repository**
-<p align="center">
 
 **Read** [**`RULEBOOK.md`**](RULEBOOK.md) **first. It is the complete specification.**
 
