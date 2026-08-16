@@ -84,4 +84,4 @@ you do against `adaptive_bidder`.
 
 ## Submission Guideline
 
-A google form link will be shared in this README soon, where you can submit your bot python file by 11:59PM, 17th August. Please follow all the guidelines mentioned in the rulebook for the submission.
+A google form link will be shared in this README at 11:00PM, where you can submit your bot python file by 11:59PM, 17th August. Please follow all the guidelines mentioned in the rulebook for the submission.
