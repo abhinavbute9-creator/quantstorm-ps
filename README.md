@@ -18,7 +18,7 @@
   <img src="assets/QRT.jpeg" height="40">
 </p>
 
-**Last Updated at: 12:52 AM, if your version is older please re-fetch the repository**
+**Last Updated at: 8:22 AM, if your version is older please re-fetch the repository**
 
 
 **Read** [**`RULEBOOK.md`**](RULEBOOK.md) **first. It is the complete specification.**
@@ -101,7 +101,24 @@ bot that prices perfectly and never bids.
 Beating the field takes both halves. Start by clearing `naive_ev`, then see how
 you do against `adaptive_bidder`.
 
+### [Live Leaderboard](https://www.tinyurl.com/quantstorm)
+
+The live leaderboard is meant for fun and to give you an indication of how your bot is performing during the competition.
+
+Your leaderboard score is the cumulative PnL of your bot against 10 standard bots on set seed, maintained by us. These standard bots are hidden, and the leaderboard does not represent the final competition results.
+
+* Every new submission will overwrite your previous score and rank. There is no limit to the number of submissions.
+* You must submit using the same email address you used to register on Unstop.
+* Submissions made with a different email address will be auto-rejected.
+* Use your real name and college name in the bot's comments, however you may keep any fun(but appropriate) name for the bot's file name.
+* Validate your bot on the backtester locally before submission. Invalid bots will be auto-rejected.
+* There is a 10 minute cooldown between submitting bots.
+
+Use the leaderboard as a benchmark to experiment, improve, and see how your strategy is performing.
+
+
 ## Submission Guideline
 
 A google form link will be shared in this README at 11:00PM, where you can submit your bot python file by 11:59PM, 17th August. Please follow all the guidelines mentioned in the rulebook for the submission.
+**Note that you can only upload your final strategy once in the google form, so choose your final strategy wisely.**
 
